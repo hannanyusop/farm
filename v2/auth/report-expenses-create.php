@@ -5,66 +5,51 @@
     <?php
         $nav = [
             'Dashboard' => 'home.php',
-            'Milk Production' => '#',
+            'Report' => '#',
+            'Expenses' => '#',
             'Create' => '#'
         ];
 
-    // variable declaration
-    $date = "";
-    $stallno  = "";
-    $animalid = "";
-    $litre = "";
-    $collectedby = "";
-    $errors = array();
-//    $_SESSION['success'] = "";
+        $date = "";
+        $purpose = "";
+        $details = "";
+        $total= "";
+        $errors = array();
 
-
-    // call the register() function if register_btn is clicked
-    if (isset($_POST['register_btn'])) {
-        milkRegister();
-    }
-
-    function milkRegister()
-    {
         // REGISTER USER
         if (isset($_POST['reg_add'])) {
             // receive all input values from the form
             $date = mysqli_real_escape_string($db, $_POST['date']);
-            $stallno = mysqli_real_escape_string($db, $_POST['stallno']);
-            $animalid = mysqli_real_escape_string($db, $_POST['animalid']);
-            $litre = mysqli_real_escape_string($db, $_POST['litre']);
-            $collectedby = mysqli_real_escape_string($db, $_POST['collectedby']);
+            $purpose = mysqli_real_escape_string($db, $_POST['purpose']);
+            $details = mysqli_real_escape_string($db, $_POST['details']);
+            $total = mysqli_real_escape_string($db, $_POST['total']);
 
             // form validation: ensure that the form is correctly filled
             if (empty($date)) {
                 array_push($errors, "Date is required");
             }
-            if (empty($stallno)) {
-                array_push($errors, "Stall No is required");
+            if (empty($purpose)) {
+                array_push($errors, "Purpose is required");
             }
-            if (empty($animalid)) {
-                array_push($errors, "Animal ID is required");
+            if (empty($details)) {
+                array_push($errors, "Details is required");
             }
-            if (empty($litre)) {
-                array_push($errors, "Litre is required");
-            }
-            if (empty($collectedby)) {
-                array_push($errors, "Collected By is required");
+            if (empty($total)) {
+                array_push($errors, "Total Amount is required");
             }
 
             // register user if there are no errors in the form
             if (count($errors) == 0) {
-                $query = "INSERT INTO collectmilk (date, stallno, animalid, litre, collectedby) 
-  			  VALUES('$date', '$stallno', '$animalid', '$litre' ,'$collectedby')";
+                $query = "INSERT INTO expenses (date, purpose, details, total) 
+                  VALUES('$date', '$purpose', '$details', '$total')";
                 mysqli_query($db, $query);
                 if ($_SESSION['success'] = "ADDED!!") {
-                    header('location: index.php');
+                    header('location: report-expenses.php');
                 } else {
                     array_push($errors, "Please Try Again");
                 }
             }
         }
-    }
     ?>
 
     <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
@@ -93,36 +78,30 @@
                                                 <div class="form-group row mb-3">
                                                     <label for="date" class="col-3 col-form-label">Date</label>
                                                     <div class="col-9">
-                                                        <input type="date" name="date" class="form-control" id="date" placeholder="Date" value="<?= $date ?>">
+                                                        <input type="date" name="date" class="form-control" id="date" value="<?php echo $date ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="stallno" class="col-3 col-form-label">Stall No</label>
+                                                    <label for="purpose" class="col-3 col-form-label">Purpose</label>
                                                     <div class="col-9">
-                                                        <input type="text" name="stallno" class="form-control" id="stallno" placeholder="Stall No" value="<?= $stallno ?>">
+                                                        <input type="text" name="purpose" class="form-control" id="purpose" value="<?php echo $purpose ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="animalid" class="col-3 col-form-label">Animal ID</label>
+                                                    <label for="details" class="col-3 col-form-label">Details</label>
                                                     <div class="col-9">
-                                                        <input type="text" name="animalid" class="form-control" id="animalid" placeholder="Animal ID" value="<?= $animalid ?>">
+                                                        <input type="text" name="details" class="form-control" id="details" value="<?php echo $details ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="litre" class="col-3 col-form-label">Litre(L)</label>
+                                                    <label for="total" class="col-3 col-form-label">Total(RM)</label>
                                                     <div class="col-9">
-                                                        <input type="number" name="litre" step="0.01" class="form-control" id="litre" placeholder="Litre" value="<?= $litre ?>">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row mb-3">
-                                                    <label for="collectedby" class="col-3 col-form-label">Collected By</label>
-                                                    <div class="col-9">
-                                                        <input type="text" name="collectedby" class="form-control" id="collectedby" placeholder="Collected By" value="<?= $collectedby ?>">
+                                                        <input type="number" step=".01" name="total" class="form-control" id="total" value="<?php echo $total ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group mb-0 justify-content-end row">
                                                     <div class="col-9">
-                                                        <button type="submit" class="btn btn-info" name="reg_add">Add</button>
+                                                        <button type="submit" class="btn btn-info" name="reg_add">Create</button>
                                                     </div>
                                                 </div>
                                             </form>

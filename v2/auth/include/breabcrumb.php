@@ -23,7 +23,7 @@
 <div class="row">
     <div class="col-md-12">
         <?php if (isset($_SESSION['success'])) : ?>
-            <div class="alert alert-success alert-dismissible bg-danger text-white border-0 fade show">
+            <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show">
                 <h3>
                     <?php
                     echo $_SESSION['success'];

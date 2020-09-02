@@ -44,7 +44,7 @@
                         <a href="milk-collection-view-new.php">View New Collection</a>
                         <a href="milk-collection-create.php">Create New Collection</a>
                         <a href="milk-collection-search.php">Search Milk Collection</a>
-                        <a href="milk-collection-view">View Milk Collection</a>
+                        <a href="milk-collection-view.php">View Milk Collection</a>
                         <a href="milk-sales-view.php">View Sales</a>
                         <a href="milk-sales-create.php">Create Sales</a>
                     </li>
@@ -83,6 +83,20 @@
 
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
+                    <i class="uil-chart"></i>
+                    <span> Report </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <ul class="side-nav-second-level" aria-expanded="false">
+                    <li>
+                        <a href="report-expenses.php">Expenses</a>
+                        <a href="report-sale.php">Milk Sales</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-user-check"></i>
                     <span> User </span>
                     <span class="menu-arrow"></span>
@@ -93,14 +107,6 @@
                     </li>
                 </ul>
             </li>
-
-            <li class="side-nav-item">
-                <a href="report.php" class="side-nav-link">
-                    <i class="uil-chart"></i>
-                    <span> Report </span>
-                </a>
-            </li>
-
 
 
         </ul>

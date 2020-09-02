@@ -20,8 +20,6 @@
     $price = "";
     $paymentstatus = "";
     $errors = array();
-    $_SESSION['success'] = "";
-
 
     // call the register() function if register_btn is clicked
     if (isset($_POST['register_btn'])) {

@@ -5,12 +5,13 @@
     <?php
         $nav = [
             'Dashboard' => 'home.php',
-            'Milk Production' => '#',
-            'View New Collection' => '#'
+            'Cow Feed' => '#',
+            'View' => '#'
         ];
 
-        $query = "SELECT * FROM collectmilk";
-        $results = mysqli_query($db, $query);
+    $query = "SELECT * FROM cowfeed";
+    $results = mysqli_query($db, $query);
+
     ?>
 
     <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
@@ -35,15 +36,14 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered" id="basic-datatable">
-                                                <tr class="bg-info text-white">
+                                            <table class="table table-bordered">
+                                                <tr class="bg-info text-white text-center">
                                                     <th>Id</th>
                                                     <th>Date</th>
                                                     <th>Stall No</th>
                                                     <th>Animal ID</th>
-                                                    <th>Litre</th>
-                                                    <th>Collected By</th>
-                                                    <th>Operation</th>
+                                                    <th>Notes / Reminder</th>
+                                                    <th colspan="2">Operation</th>
                                                 </tr>
                                                 <?php
                                                 while($rows=mysqli_fetch_assoc($results))
@@ -54,12 +54,9 @@
                                                         <td><?php echo $rows['date'];?></td>
                                                         <td><?php echo $rows['stallno'];?></td>
                                                         <td><?php echo $rows['animalid'];?></td>
-                                                        <td><?php echo $rows['litre'];?></td>
-                                                        <td><?php echo $rows['collectedby'];?></td>
-                                                        <td>
-                                                            <a class="btn btn-outline-info btn-sm" href='update.php?id=<?php echo $row['id']; ?>& date=<?php echo $row['date'];?>& stallno=<?php echo $row['stallno'];?>& litre=<?php echo $row['litre'];?>& collectedby=<?php echo $row['collectedby'];?>'>Update</a>
-                                                            <a class="btn btn-danger btn-sm" href='delete.php?id=<?php echo $row['id']; ?>& date=<?php echo $row['date'];?>& stallno=<?php echo $row['stallno'];?>& litre=<?php echo $row['litre'];?>& collectedby=<?php echo $row['collectedby'];?>'>Delete</a>
-                                                        </td>
+                                                        <td><?php echo $rows['notes'];?></td>
+                                                        <td><a href='updatecowfeed.php?id=<?php echo $rows['id']; ?>& date=<?php echo $rows['date'];?>& stallno=<?php echo $rows['stallno'];?>& animalid=<?php echo $rows['animalid'];?>& notes=<?php echo $rows['notes'];?>'>Update</a></td>
+                                                        <td><a href='deletecowfeed.php?id=<?php echo $rows['id']; ?>& date=<?php echo $rows['date'];?>& stallno=<?php echo $rows['stallno'];?>& animalid=<?php echo $rows['animalid'];?>& notes=<?php echo $rows['notes'];?>'>Delete</a></td>
                                                     </tr>
                                                     <?php
                                                 }

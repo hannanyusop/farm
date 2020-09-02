@@ -5,35 +5,26 @@
     <?php
         $nav = [
             'Dashboard' => 'home.php',
-            'Milk Production' => '#',
+            'Vaccine' => '#',
             'Create' => '#'
         ];
 
-    // variable declaration
-    $date = "";
-    $stallno  = "";
-    $animalid = "";
-    $litre = "";
-    $collectedby = "";
-    $errors = array();
-//    $_SESSION['success'] = "";
+        $date = "";
+        $stallno  = "";
+        $animalid = "";
+        $vaccine ="";
+        $notes = "";
+        $errors = array();
 
 
-    // call the register() function if register_btn is clicked
-    if (isset($_POST['register_btn'])) {
-        milkRegister();
-    }
-
-    function milkRegister()
-    {
         // REGISTER USER
         if (isset($_POST['reg_add'])) {
             // receive all input values from the form
             $date = mysqli_real_escape_string($db, $_POST['date']);
             $stallno = mysqli_real_escape_string($db, $_POST['stallno']);
             $animalid = mysqli_real_escape_string($db, $_POST['animalid']);
-            $litre = mysqli_real_escape_string($db, $_POST['litre']);
-            $collectedby = mysqli_real_escape_string($db, $_POST['collectedby']);
+            $vaccine = mysqli_real_escape_string($db, $_POST['vaccine']);
+            $notes = mysqli_real_escape_string($db, $_POST['notes']);
 
             // form validation: ensure that the form is correctly filled
             if (empty($date)) {
@@ -45,26 +36,25 @@
             if (empty($animalid)) {
                 array_push($errors, "Animal ID is required");
             }
-            if (empty($litre)) {
-                array_push($errors, "Litre is required");
+            if (empty($vaccine)) {
+                array_push($errors, "Vaccine Status / Type Of Vaccine is required");
             }
-            if (empty($collectedby)) {
-                array_push($errors, "Collected By is required");
+            if (empty($notes)) {
+                array_push($errors, "Notes/ Reminder is required");
             }
 
             // register user if there are no errors in the form
             if (count($errors) == 0) {
-                $query = "INSERT INTO collectmilk (date, stallno, animalid, litre, collectedby) 
-  			  VALUES('$date', '$stallno', '$animalid', '$litre' ,'$collectedby')";
+                $query = "INSERT INTO vaccine (date, stallno, animalid, vaccine, notes) 
+                  VALUES('$date', '$stallno', '$animalid', '$vaccine', '$notes')";
                 mysqli_query($db, $query);
                 if ($_SESSION['success'] = "ADDED!!") {
-                    header('location: index.php');
+                    header('location: home.php');
                 } else {
                     array_push($errors, "Please Try Again");
                 }
             }
         }
-    }
     ?>
 
     <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
@@ -93,36 +83,37 @@
                                                 <div class="form-group row mb-3">
                                                     <label for="date" class="col-3 col-form-label">Date</label>
                                                     <div class="col-9">
-                                                        <input type="date" name="date" class="form-control" id="date" placeholder="Date" value="<?= $date ?>">
+                                                        <input name="date" type="date" class="form-control" id="date" value="<?php echo $date ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="stallno" class="col-3 col-form-label">Stall No</label>
+                                                    <label for="stallno" class="col-3 col-form-label">Stall Number</label>
                                                     <div class="col-9">
-                                                        <input type="text" name="stallno" class="form-control" id="stallno" placeholder="Stall No" value="<?= $stallno ?>">
+                                                        <input name="stallno" type="text" class="form-control" id="stallno" value="<?php echo $stallno ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
                                                     <label for="animalid" class="col-3 col-form-label">Animal ID</label>
                                                     <div class="col-9">
-                                                        <input type="text" name="animalid" class="form-control" id="animalid" placeholder="Animal ID" value="<?= $animalid ?>">
+                                                        <input name="animalid" type="text" class="form-control" id="animalid" value="<?php echo $animalid ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="litre" class="col-3 col-form-label">Litre(L)</label>
+                                                    <label for="vaccine" class="col-3 col-form-label">Vaccine Status / Type Of Vaccine</label>
                                                     <div class="col-9">
-                                                        <input type="number" name="litre" step="0.01" class="form-control" id="litre" placeholder="Litre" value="<?= $litre ?>">
+                                                        <input name="vaccine" type="text" class="form-control" id="vaccine" value="<?php echo $vaccine ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="collectedby" class="col-3 col-form-label">Collected By</label>
+                                                    <label for="notes" class="col-3 col-form-label">Notes/Remainder</label>
                                                     <div class="col-9">
-                                                        <input type="text" name="collectedby" class="form-control" id="collectedby" placeholder="Collected By" value="<?= $collectedby ?>">
+                                                        <textarea name="notes" class="form-control" id="notes"><?php echo  $notes ?></textarea>
                                                     </div>
                                                 </div>
+
                                                 <div class="form-group mb-0 justify-content-end row">
                                                     <div class="col-9">
-                                                        <button type="submit" class="btn btn-info" name="reg_add">Add</button>
+                                                        <button type="submit" class="btn btn-info" name="reg_add">Create</button>
                                                     </div>
                                                 </div>
                                             </form>
