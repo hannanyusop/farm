@@ -9,8 +9,21 @@
             'Sales' => '#'
         ];
 
-    $query = "SELECT * FROM milksales";
-    $results = mysqli_query($db, $query);
+        $query = "SELECT * FROM milksales";
+        $results = mysqli_query($db, $query);
+
+        if(isset($_GET['delete'])) {
+
+            $id = $_GET['delete'];
+
+            $query = "DELETE FROM milksales WHERE id='$id'";
+            mysqli_query($db, $query);
+            if ($_SESSION['success'] = "RECORD DELETED!!") {
+                header('location: milk-sales-view.php');
+            } else {
+                array_push($errors, "Please Try Again");
+            }
+        }
 
     ?>
 
@@ -47,7 +60,7 @@
                                                     <th>Litre</th>
                                                     <th>Price</th>
                                                     <th>Payment Status</th>
-                                                    <th colspan="2">Operation</th>
+                                                    <th>Operation</th>
                                                 </tr>
                                                 <?php
                                                 while($rows=mysqli_fetch_assoc($results))
@@ -63,8 +76,10 @@
                                                         <td><?php echo $rows['litre'];?></td>
                                                         <td><?php echo $rows['price'];?></td>
                                                         <td><?php echo $rows['paymentstatus'];?></td>
-                                                        <td><a href='updatemilksale.php?id=<?php echo $rows['id']; ?>& date=<?php echo $rows['date'];?>& accno=<?php echo $rows['accno'];?>& name=<?php echo $rows['name'];?>& contact=<?php echo $rows['contact'];?>& email=<?php echo $rows['email'];?>& litre=<?php echo $rows['litre'];?>& price=<?php echo $rows['price'];?>& paymentstatus=<?php echo $rows['paymentstatus'];?>'>Update</a></td>
-                                                        <td><a href='deletemilksales.php?id=<?php echo $rows['id']; ?>& date=<?php echo $rows['date'];?>& accno=<?php echo $rows['accno'];?>& name=<?php echo $rows['name'];?>& contact=<?php echo $rows['contact'];?>& email=<?php echo $rows['email'];?>& litre=<?php echo $rows['litre'];?>& price=<?php echo $rows['price'];?>& paymentstatus=<?php echo $rows['paymentstatus'];?>'>Delete</a></td>
+                                                        <td>
+                                                            <a class="btn btn-outline-info btn-sm" href='milk-sales-update.php?id=<?php echo $rows['id']; ?>'>Update</a>
+                                                            <a class="btn btn-danger btn-sm" href='milk-sales-view.php?delete=<?php echo $rows['id']; ?>' onclick="return confirm('Are you sure?')">Delete</a>
+                                                        </td>
                                                     </tr>
                                                     <?php
                                                 }

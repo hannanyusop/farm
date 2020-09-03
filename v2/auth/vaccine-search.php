@@ -90,8 +90,8 @@
                                                     <td><?php echo $row['vaccine'];?></td>
                                                     <td><?php echo $row['notes'];?></td>
                                                     <td>
-                                                        <a class="btn btn-outline-info btn-sm" href='updatevaccine.php?id=<?php echo $rows['id']; ?>& date=<?php echo $rows['date'];?>& stallno=<?php echo $rows['stallno'];?>& animalid=<?php echo $rows['animalid'];?>& vaccine=<?php echo $rows['vaccine'];?>& notes=<?php echo $rows['notes'];?>'>Update</a>
-                                                        <a class="btn btn-danger btn-sm" href='deletevaccine.php?id=<?php echo $rows['id']; ?>& date=<?php echo $rows['date'];?>& stallno=<?php echo $rows['stallno'];?>& animalid=<?php echo $rows['animalid'];?>& vaccine=<?php echo $rows['vaccine'];?>& notes=<?php echo $rows['notes'];?>'>Delete</a>
+                                                        <a class="btn btn-outline-info btn-sm" href='vaccine-update.php?id=<?php echo $row['id']; ?>'>Update</a>
+                                                        <a class="btn btn-danger btn-sm" href='vaccine-view.php?delete=<?php echo $row['id']; ?>' onclick="return confirm('Are you sure?')">Delete</a>
                                                     </td>
                                                     <?php endwhile;?>
                                             </table>

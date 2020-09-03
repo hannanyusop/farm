@@ -9,8 +9,20 @@
             'View' => '#'
         ];
 
-    $query = "SELECT * FROM cowfeed";
-    $results = mysqli_query($db, $query);
+        $query = "SELECT * FROM cowfeed";
+        $results = mysqli_query($db, $query);
+
+        if(isset($_GET['delete'])){
+
+            $id =$_GET['delete'];
+            $query = "DELETE FROM COWFEED WHERE id='$id'";
+            mysqli_query($db , $query);
+            if($_SESSION['success'] = "RECORD DELETED!!"){
+                header('location: feed-view.php');
+            }else {
+                array_push($errors, "Please Try Again");
+            }
+        }
 
     ?>
 
@@ -43,7 +55,7 @@
                                                     <th>Stall No</th>
                                                     <th>Animal ID</th>
                                                     <th>Notes / Reminder</th>
-                                                    <th colspan="2">Operation</th>
+                                                    <th>Operation</th>
                                                 </tr>
                                                 <?php
                                                 while($rows=mysqli_fetch_assoc($results))
@@ -55,8 +67,10 @@
                                                         <td><?php echo $rows['stallno'];?></td>
                                                         <td><?php echo $rows['animalid'];?></td>
                                                         <td><?php echo $rows['notes'];?></td>
-                                                        <td><a href='updatecowfeed.php?id=<?php echo $rows['id']; ?>& date=<?php echo $rows['date'];?>& stallno=<?php echo $rows['stallno'];?>& animalid=<?php echo $rows['animalid'];?>& notes=<?php echo $rows['notes'];?>'>Update</a></td>
-                                                        <td><a href='deletecowfeed.php?id=<?php echo $rows['id']; ?>& date=<?php echo $rows['date'];?>& stallno=<?php echo $rows['stallno'];?>& animalid=<?php echo $rows['animalid'];?>& notes=<?php echo $rows['notes'];?>'>Delete</a></td>
+                                                        <td>
+                                                            <a class="btn btn-outline-info btn-sm" href='feed-update.php?id=<?php echo $rows['id']; ?>'>Update</a>
+                                                            <a class="btn btn-danger" href='feed-view.php?delete=<?php echo $rows['id']; ?>' onclick="return confirm('Are you sure?')">Delete</a>
+                                                        </td>
                                                     </tr>
                                                     <?php
                                                 }

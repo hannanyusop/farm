@@ -89,8 +89,8 @@
                                                     <td><?php echo $row['animalid'];?></td>
                                                     <td><?php echo $row['notes'];?></td>
                                                     <td>
-                                                        <a class="btn btn-outline-info btn-sm" href='updatecowfeed.php?id=<?php echo $row['id']; ?>& date=<?php echo $row['date'];?>& stallno=<?php echo $row['stallno'];?>& notes=<?php echo $row['notes'];?>'>Update</a>
-                                                        <a class="btn btn-danger btn-sm" href='deletecowfeed.php?id=<?php echo $row['id']; ?>& date=<?php echo $row['date'];?>& stallno=<?php echo $row['stallno'];?>& notes=<?php echo $row['notes'];?>'>Delete</a>
+                                                        <a class="btn btn-outline-info btn-sm" href='feed-update.php?id=<?php echo $rows['id']; ?>'>Update</a>
+                                                        <a class="btn btn-danger" href='feed-view.php?delete=<?php echo $rows['id']; ?>' onclick="return confirm('Are you sure?')">Delete</a>
                                                     </td>
                                                 </tr>
                                                     <?php endwhile;?>

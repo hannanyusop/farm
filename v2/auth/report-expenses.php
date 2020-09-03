@@ -58,8 +58,10 @@
                                                         <td><?php echo $rows['purpose'];?></td>
                                                         <td><?php echo $rows['details'];?></td>
                                                         <td><?php echo $rows['total'];?></td>
-                                                        <td><a href='updateexpenses.php?id=<?php echo $rows['id']; ?>& date=<?php echo $rows['date'];?>& purpose=<?php echo $rows['purpose'];?>& details=<?php echo $rows['details'];?>& total=<?php echo $rows['total'];?>'>Update</a></td>
-                                                        <td><a href='deleteexpenses.php?id=<?php echo $rows['id']; ?>& date=<?php echo $rows['date'];?>& purpose=<?php echo $rows['purpose'];?>& details=<?php echo $rows['details'];?>& total=<?php echo $rows['total'];?>'>Delete</a></td>
+                                                        <td>
+                                                            <a href='updateexpenses.php?id=<?php echo $rows['id']; ?>'>Update</a>
+                                                            <a href='deleteexpenses.php?delete=<?php echo $rows['id']; ?>' onclick="return confirm('Are you sure')">Delete</a>
+                                                        </td>
                                                     </tr>
                                                     <?php
                                                 }

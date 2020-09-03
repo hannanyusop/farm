@@ -6,55 +6,54 @@
         $nav = [
             'Dashboard' => 'home.php',
             'Vaccine' => '#',
-            'Create' => '#'
+            $_GET['id'] => '#',
+            'Update' => '#'
         ];
 
-        $date = "";
-        $stallno  = "";
-        $animalid = "";
-        $vaccine ="";
-        $notes = "";
-        $errors = array();
+    if(isset($_GET['id'])){
+        $id =$_GET['id'];
+        $edit_state = true;
+        $rec =mysqli_query($db, "SELECT * FROM vaccine WHERE id=$id");
+        $record =mysqli_fetch_array($rec);
+        $id =$record['id'];
+        $date =$record['date'];
+        $stallno =$record['stallno'];
+        $animalid =$record['animalid'];
+        $vaccine =$record['vaccine'];
+        $notes =$record['notes'];
 
+        if(isset($_POST['update'])){
 
-        // REGISTER USER
-        if (isset($_POST['reg_add'])) {
-            // receive all input values from the form
             $date = mysqli_real_escape_string($db, $_POST['date']);
-            $stallno = mysqli_real_escape_string($db, $_POST['stallno']);
+            $stallno= mysqli_real_escape_string($db, $_POST['stallno']);
             $animalid = mysqli_real_escape_string($db, $_POST['animalid']);
             $vaccine = mysqli_real_escape_string($db, $_POST['vaccine']);
             $notes = mysqli_real_escape_string($db, $_POST['notes']);
 
-            // form validation: ensure that the form is correctly filled
-            if (empty($date)) {
-                array_push($errors, "Date is required");
-            }
-            if (empty($stallno)) {
-                array_push($errors, "Stall No is required");
-            }
-            if (empty($animalid)) {
-                array_push($errors, "Animal ID is required");
-            }
-            if (empty($vaccine)) {
-                array_push($errors, "Vaccine Status / Type Of Vaccine is required");
-            }
-            if (empty($notes)) {
-                array_push($errors, "Notes/ Reminder is required");
-            }
 
-            // register user if there are no errors in the form
+
+            if (empty($date)) { array_push($errors, "Date is required"); }
+            if (empty($stallno)) { array_push($errors, "Stall No is required"); }
+            if (empty($animalid)) { array_push($errors, "Animal ID is required"); }
+            if (empty($vaccine)) { array_push($errors, "Vaccine Status / Type is required"); }
+            if (empty($notes)) { array_push($errors, "Notes / Reminder is required"); }
+
+            // update 400pt if there are no errors in the form
             if (count($errors) == 0) {
-                $query = "INSERT INTO vaccine (date, stallno, animalid, vaccine, notes) 
-                  VALUES('$date', '$stallno', '$animalid', '$vaccine', '$notes')";
-                mysqli_query($db, $query);
-                if ($_SESSION['success'] = "ADDED!!") {
+                $query="UPDATE vaccine SET date='$date', stallno='$stallno',animalid='$animalid', vaccine='$vaccine',notes='$notes' WHERE vaccine.id=$id";
+                mysqli_query($db ,$query);
+                if($_SESSION['success'] = "RECORD UPDATED!!"){
                     header('location: vaccine-view.php');
-                } else {
+                }else {
                     array_push($errors, "Please Try Again");
                 }
             }
         }
+
+    }else{
+
+    }
+
     ?>
 
     <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
@@ -113,7 +112,7 @@
 
                                                 <div class="form-group mb-0 justify-content-end row">
                                                     <div class="col-9">
-                                                        <button type="submit" class="btn btn-info" name="reg_add">Create</button>
+                                                        <button type="submit" class="btn btn-info" name="update">Update</button>
                                                     </div>
                                                 </div>
                                             </form>

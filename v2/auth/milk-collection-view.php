@@ -57,8 +57,10 @@
                                                         <td><?php echo $rows['animalid'];?></td>
                                                         <td><?php echo $rows['litre'];?></td>
                                                         <td><?php echo $rows['collectedby'];?></td>
-                                                        <td><a href='update.php?id=<?php echo $rows['id']; ?>& date=<?php echo $rows['date'];?>& stallno=<?php echo $rows['stallno'];?>& animalid=<?php echo $rows['animalid'];?>& litre=<?php echo $rows['litre'];?>& collectedby=<?php echo $rows['collectedby'];?>'>Update</a></td>
-                                                        <td><a href='delete.php?id=<?php echo $rows['id']; ?>& date=<?php echo $rows['date'];?>& stallno=<?php echo $rows['stallno'];?>& animalid=<?php echo $rows['animalid'];?>& litre=<?php echo $rows['litre'];?>& collectedby=<?php echo $rows['collectedby'];?>'>Delete</a></td>
+                                                        <td>
+                                                            <a class="btn btn-outline-info btn-sm" href='milk-collection-update.php?id=<?php echo $rows['id']; ?>'>Update</a>
+                                                            <a class="btn btn-danger btn-sm" href='milk-collection-view-new.php?delete=<?php echo $rows['id'];?>' onclick="return confirm('Are you sure?')">Delete</a>
+                                                        </td>
                                                     </tr>
                                                     <?php
                                                 }

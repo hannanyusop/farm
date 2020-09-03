@@ -5,56 +5,66 @@
     <?php
         $nav = [
             'Dashboard' => 'home.php',
-            'Vaccine' => '#',
+            'Milk Production' => '#',
             'Create' => '#'
         ];
 
-        $date = "";
-        $stallno  = "";
-        $animalid = "";
-        $vaccine ="";
-        $notes = "";
-        $errors = array();
+    // variable declaration
+    $date = "";
+    $stallno  = "";
+    $animalid = "";
+    $litre = "";
+    $collectedby = "";
+    $errors = array();
+
+    if(isset($_GET['id'])){
+
+        $id = $_GET['id'];
+        $edit_state = true;
+        $rec =mysqli_query($db, "SELECT * FROM collectmilk WHERE id=$id");
+        $record =mysqli_fetch_array($rec);
+        $id =$record['id'];
+        $date =$record['date'];
+        $stallno =$record['stallno'];
+        $animalid =$record['animalid'];
+        $litre =$record['litre'];
+        $collectedby =$record['collectedby'];
 
 
-        // REGISTER USER
-        if (isset($_POST['reg_add'])) {
-            // receive all input values from the form
+        if(isset($_POST['update'])){
+
             $date = mysqli_real_escape_string($db, $_POST['date']);
-            $stallno = mysqli_real_escape_string($db, $_POST['stallno']);
+            $stallno= mysqli_real_escape_string($db, $_POST['stallno']);
             $animalid = mysqli_real_escape_string($db, $_POST['animalid']);
-            $vaccine = mysqli_real_escape_string($db, $_POST['vaccine']);
-            $notes = mysqli_real_escape_string($db, $_POST['notes']);
+            $litre = mysqli_real_escape_string($db, $_POST['litre']);
+            $collectedby = mysqli_real_escape_string($db, $_POST['collectedby']);
 
-            // form validation: ensure that the form is correctly filled
-            if (empty($date)) {
-                array_push($errors, "Date is required");
-            }
-            if (empty($stallno)) {
-                array_push($errors, "Stall No is required");
-            }
-            if (empty($animalid)) {
-                array_push($errors, "Animal ID is required");
-            }
-            if (empty($vaccine)) {
-                array_push($errors, "Vaccine Status / Type Of Vaccine is required");
-            }
-            if (empty($notes)) {
-                array_push($errors, "Notes/ Reminder is required");
-            }
 
-            // register user if there are no errors in the form
+
+            if (empty($date)) { array_push($errors, "Date is required"); }
+            if (empty($stallno)) { array_push($errors, "Stall No is required"); }
+            if (empty($animalid)) { array_push($errors, "Animal ID is required"); }
+            if (empty($litre)) { array_push($errors, "Litre is required"); }
+            if (empty($collectedby)) { array_push($errors, "Collected By is required"); }
+
+            // update 400pt if there are no errors in the form
             if (count($errors) == 0) {
-                $query = "INSERT INTO vaccine (date, stallno, animalid, vaccine, notes) 
-                  VALUES('$date', '$stallno', '$animalid', '$vaccine', '$notes')";
-                mysqli_query($db, $query);
-                if ($_SESSION['success'] = "ADDED!!") {
-                    header('location: vaccine-view.php');
-                } else {
+                $query="UPDATE collectmilk SET date='$date', stallno='$stallno',animalid='$animalid',litre='$litre',collectedby='$collectedby' WHERE collectmilk.id=$id";
+                mysqli_query($db ,$query);
+                if($_SESSION['success'] = "RECORD UPDATED!!"){
+                    header('location: milk-collection-view-new.php');
+                }else {
                     array_push($errors, "Please Try Again");
                 }
             }
         }
+
+    }else{
+        header('location: milk-collection-view-new.php');
+    }
+
+
+
     ?>
 
     <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
@@ -83,37 +93,36 @@
                                                 <div class="form-group row mb-3">
                                                     <label for="date" class="col-3 col-form-label">Date</label>
                                                     <div class="col-9">
-                                                        <input name="date" type="date" class="form-control" id="date" value="<?php echo $date ?>">
+                                                        <input type="date" name="date" class="form-control" id="date" placeholder="Date" value="<?= $date ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="stallno" class="col-3 col-form-label">Stall Number</label>
+                                                    <label for="stallno" class="col-3 col-form-label">Stall No</label>
                                                     <div class="col-9">
-                                                        <input name="stallno" type="text" class="form-control" id="stallno" value="<?php echo $stallno ?>">
+                                                        <input type="text" name="stallno" class="form-control" id="stallno" placeholder="Stall No" value="<?= $stallno ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
                                                     <label for="animalid" class="col-3 col-form-label">Animal ID</label>
                                                     <div class="col-9">
-                                                        <input name="animalid" type="text" class="form-control" id="animalid" value="<?php echo $animalid ?>">
+                                                        <input type="text" name="animalid" class="form-control" id="animalid" placeholder="Animal ID" value="<?= $animalid ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="vaccine" class="col-3 col-form-label">Vaccine Status / Type Of Vaccine</label>
+                                                    <label for="litre" class="col-3 col-form-label">Litre(L)</label>
                                                     <div class="col-9">
-                                                        <input name="vaccine" type="text" class="form-control" id="vaccine" value="<?php echo $vaccine ?>">
+                                                        <input type="number" name="litre" step="0.01" class="form-control" id="litre" placeholder="Litre" value="<?= $litre ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="notes" class="col-3 col-form-label">Notes/Remainder</label>
+                                                    <label for="collectedby" class="col-3 col-form-label">Collected By</label>
                                                     <div class="col-9">
-                                                        <textarea name="notes" class="form-control" id="notes"><?php echo  $notes ?></textarea>
+                                                        <input type="text" name="collectedby" class="form-control" id="collectedby" placeholder="Collected By" value="<?= $collectedby ?>">
                                                     </div>
                                                 </div>
-
                                                 <div class="form-group mb-0 justify-content-end row">
                                                     <div class="col-9">
-                                                        <button type="submit" class="btn btn-info" name="reg_add">Create</button>
+                                                        <button type="submit" class="btn btn-info" name="update">Update</button>
                                                     </div>
                                                 </div>
                                             </form>

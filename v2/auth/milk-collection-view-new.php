@@ -11,6 +11,20 @@
 
         $query = "SELECT * FROM collectmilk";
         $results = mysqli_query($db, $query);
+
+
+        if(isset($_GET['delete'])){
+
+            $id =$_GET['delete'];
+
+            $query = "DELETE FROM COLLECTMILK WHERE id='$id'";
+            mysqli_query($db , $query);
+            if($_SESSION['success'] = "RECORD DELETED!!"){
+                header('location: milk-collection-view-new.php');
+            }else {
+                array_push($errors, "Please Try Again");
+            }
+        }
     ?>
 
     <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
@@ -57,8 +71,8 @@
                                                         <td><?php echo $rows['litre'];?></td>
                                                         <td><?php echo $rows['collectedby'];?></td>
                                                         <td>
-                                                            <a class="btn btn-outline-info btn-sm" href='update.php?id=<?php echo $row['id']; ?>& date=<?php echo $row['date'];?>& stallno=<?php echo $row['stallno'];?>& litre=<?php echo $row['litre'];?>& collectedby=<?php echo $row['collectedby'];?>'>Update</a>
-                                                            <a class="btn btn-danger btn-sm" href='delete.php?id=<?php echo $row['id']; ?>& date=<?php echo $row['date'];?>& stallno=<?php echo $row['stallno'];?>& litre=<?php echo $row['litre'];?>& collectedby=<?php echo $row['collectedby'];?>'>Delete</a>
+                                                            <a class="btn btn-outline-info btn-sm" href='milk-collection-update.php?id=<?php echo $rows['id']; ?>'>Update</a>
+                                                            <a class="btn btn-danger btn-sm" href='milk-collection-view-new.php?delete=<?php echo $rows['id'];?>' onclick="return confirm('Are you sure?')">Delete</a>
                                                         </td>
                                                     </tr>
                                                     <?php
