@@ -5,51 +5,47 @@
     <?php
         $nav = [
             'Dashboard' => 'home.php',
-            'Cow Feed' => '#',
-            $_GET['id'] => '#',
-            'Edit' => '#'
+            'Report' => '#',
+            'Expenses' => '#',
+            'Create' => '#'
         ];
 
         if(isset($_GET['id'])){
-            $id = $_GET['id'];
-            $edit_state = true;
-            $rec =mysqli_query($db, "SELECT * FROM cowfeed WHERE id=$id");
-            $record =mysqli_fetch_array($rec);
-            $id =$record['id'];
-            $date =$record['date'];
-            $stallno =$record['stallno'];
-            $animalid =$record['animalid'];
-            $notes =$record['notes'];
 
-            if(isset($_POST['update'])) {
+            $id =$_GET['id'];
+            $edit_state = true;
+            $rec =mysqli_query($db, "SELECT * FROM expenses WHERE id=$id");
+
+            $record =mysqli_fetch_array($rec);
+
+            $date =$record['date'];
+            $purpose =$record['purpose'];
+            $details =$record['details'];
+            $total =$record['total'];
+
+            if(isset($_POST['update'])){
 
                 $date = mysqli_real_escape_string($db, $_POST['date']);
-                $stallno = mysqli_real_escape_string($db, $_POST['stallno']);
-                $animalid = mysqli_real_escape_string($db, $_POST['animalid']);
-                $notes = mysqli_real_escape_string($db, $_POST['notes']);
+                $purpose = mysqli_real_escape_string($db, $_POST['purpose']);
+                $details = mysqli_real_escape_string($db, $_POST['details']);
+                $total = mysqli_real_escape_string($db, $_POST['total']);
 
 
-                if (empty($date)) {
-                    array_push($errors, "Date is required");
-                }
-                if (empty($stallno)) {
-                    array_push($errors, "Stall No is required");
-                }
-                if (empty($animalid)) {
-                    array_push($errors, "Animal ID is required");
-                }
-                if (empty($notes)) {
-                    array_push($errors, "Notes / Reminder is required");
-                }
+
+                if (empty($date)) { array_push($errors, "Date is required"); }
+                if (empty($purpose)) { array_push($errors, "Purpose is required"); }
+                if (empty($details)) { array_push($errors, "Details is required"); }
+                if (empty($total)) { array_push($errors, "Total Amount is required"); }
 
                 // update 400pt if there are no errors in the form
                 if (count($errors) == 0) {
-                    $query = "UPDATE cowfeed SET date='$date', stallno='$stallno',animalid='$animalid',notes='$notes' WHERE cowfeed.id=$id";
-                    mysqli_query($db, $query);
-                    if ($_SESSION['success'] = "RECORD UPDATED!!") {
-                        header('location: feed-view.php');
+                    $query="UPDATE expenses SET date='$date', purpose='$purpose',details='$details',total='$total' WHERE expenses.id=$id";
+                    mysqli_query($db ,$query);
+                    if($_SESSION['success'] = "RECORD UPDATED!!"){
+                        header('location: report-expenses-update.php');
                         exit();
-                    } else {
+
+                    }else {
                         array_push($errors, "Please Try Again");
                     }
                 }
@@ -83,28 +79,27 @@
                                                 <div class="form-group row mb-3">
                                                     <label for="date" class="col-3 col-form-label">Date</label>
                                                     <div class="col-9">
-                                                        <input name="date" type="date" class="form-control" id="date" value="<?php echo $date ?>">
+                                                        <input type="date" name="date" class="form-control" id="date" value="<?php echo $date ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="stallno" class="col-3 col-form-label">Stall Number</label>
+                                                    <label for="purpose" class="col-3 col-form-label">Purpose</label>
                                                     <div class="col-9">
-                                                        <input name="stallno" type="text" class="form-control" id="stallno" value="<?php echo $stallno ?>">
+                                                        <input type="text" name="purpose" class="form-control" id="purpose" value="<?php echo $purpose ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="animalid" class="col-3 col-form-label">Animal Id</label>
+                                                    <label for="details" class="col-3 col-form-label">Details</label>
                                                     <div class="col-9">
-                                                        <input name="animalid" type="text" class="form-control" id="animalid" value="<?php echo $animalid ?>">
+                                                        <input type="text" name="details" class="form-control" id="details" value="<?php echo $details ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="notes" class="col-3 col-form-label">Notes/Remainder</label>
+                                                    <label for="total" class="col-3 col-form-label">Total(RM)</label>
                                                     <div class="col-9">
-                                                        <textarea name="notes" class="form-control" id="notes"><?php echo $notes ?></textarea>
+                                                        <input type="number" step=".01" name="total" class="form-control" id="total" value="<?php echo $total ?>">
                                                     </div>
                                                 </div>
-
                                                 <div class="form-group mb-0 justify-content-end row">
                                                     <div class="col-9">
                                                         <button type="submit" class="btn btn-info" name="update">Update</button>

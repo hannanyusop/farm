@@ -20,6 +20,8 @@
             mysqli_query($db, $query);
             if ($_SESSION['success'] = "RECORD DELETED!!") {
                 header('location: milk-sales-view.php');
+                exit();
+
             } else {
                 array_push($errors, "Please Try Again");
             }

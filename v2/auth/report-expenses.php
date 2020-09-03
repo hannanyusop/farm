@@ -12,6 +12,21 @@
     $query = "SELECT * FROM expenses";
     $results = mysqli_query($db, $query);
 
+    if(isset($_GET['delete'])) {
+
+        $id = $_GET['delete'];
+
+        $query = "DELETE FROM EXPENSES WHERE id='$id'";
+        mysqli_query($db, $query);
+
+        if ($_SESSION['success'] = "RECORD DELETED!!") {
+
+            header('location: report-expenses.php');
+        } else {
+            array_push($errors, "Failed to delete record");
+        }
+    }
+
     ?>
 
     <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
@@ -59,8 +74,8 @@
                                                         <td><?php echo $rows['details'];?></td>
                                                         <td><?php echo $rows['total'];?></td>
                                                         <td>
-                                                            <a href='updateexpenses.php?id=<?php echo $rows['id']; ?>'>Update</a>
-                                                            <a href='deleteexpenses.php?delete=<?php echo $rows['id']; ?>' onclick="return confirm('Are you sure')">Delete</a>
+                                                            <a  class="btn btn-info btn-sm" href='report-expenses-update.php?id=<?php echo $rows['id']; ?>'>Update</a>
+                                                            <a class="btn btn-danger btn-sm" href='report-expenses.php?delete=<?php echo $rows['id']; ?>' onclick="return confirm('Are you sure')">Delete</a>
                                                         </td>
                                                     </tr>
                                                     <?php

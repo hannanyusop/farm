@@ -43,6 +43,7 @@
 
                 $_SESSION['success'] = "ADDED!!";
                 header('location: feed-view.php');
+                exit();
             }else {
                 array_push($errors, "Please Try Again");
             }

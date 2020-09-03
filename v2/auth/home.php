@@ -26,7 +26,7 @@
                         <?php include('include/breabcrumb.php') ?>
 
                         <div class="row">
-                            Content Here
+
                         </div>
                     </div>
                 </div>

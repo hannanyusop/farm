@@ -15,3 +15,11 @@
 </head>
 
 <?php include('../function.php') ?>
+
+<?php
+    if(isset($_SESSION['user'])){
+
+    }else{
+        echo "<script>window.location='login.php'</script>";
+    }
+?>

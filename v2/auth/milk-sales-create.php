@@ -56,6 +56,7 @@
             mysqli_query($db, $query);
             if($_SESSION['success'] = "ADDED!!"){
                 header('location: index.php');
+                exit();
             }else {
                 array_push($errors, "Please Try Again");
             }

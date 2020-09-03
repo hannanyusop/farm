@@ -50,6 +50,7 @@
                 mysqli_query($db, $query);
                 if ($_SESSION['success'] = "ADDED!!") {
                     header('location: vaccine-view.php');
+                    exit();
                 } else {
                     array_push($errors, "Please Try Again");
                 }

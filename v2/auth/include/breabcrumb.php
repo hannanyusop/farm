@@ -22,16 +22,17 @@
 
 <div class="row">
     <div class="col-md-12">
-        <?php if (isset($_SESSION['success'])) : ?>
-            <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show">
-                <h3>
-                    <?php
-                    echo $_SESSION['success'];
+        <?php
+
+                if (isset($_SESSION['success']) ){
+
+                    echo '<div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show">';
+                    echo $_SESSION['success'] .'<br>';
+                    echo '</div>';
                     unset($_SESSION['success']);
-                    ?>
-                </h3>
-            </div>
-        <?php endif ?>
+                }
+        ?>
+
         <?php echo display_error(); ?>
     </div>
 </div>

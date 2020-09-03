@@ -95,6 +95,9 @@
                 </ul>
             </li>
 
+
+            <?php if($_SESSION['user']['usertype'] == 'admin'){ ?>
+
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-user-check"></i>
@@ -103,10 +106,13 @@
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="extended-dragula.html">Dragula</a>
+                        <a href="user-view.php">View User</a>
+                        <a href="user-create.php">Create User</a>
                     </li>
                 </ul>
             </li>
+
+            <?php } ?>
 
 
         </ul>

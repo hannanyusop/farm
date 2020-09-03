@@ -44,6 +44,7 @@
                 mysqli_query($db ,$query);
                 if($_SESSION['success'] = "RECORD UPDATED!!"){
                     header('location: vaccine-view.php');
+                    exit();
                 }else {
                     array_push($errors, "Please Try Again");
                 }

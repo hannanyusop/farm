@@ -15,7 +15,6 @@
     $amount = "";
     $total= "";
     $errors = array();
-    $_SESSION['success'] = "";
 
     // REGISTER USER
     if (isset($_POST['reg_add'])) {
@@ -33,9 +32,12 @@
         if (count($errors) == 0) {
             $query = "INSERT INTO milkreport (month, amount, total) 
   			  VALUES( '$month', '$amount', '$total')";
-            mysqli_query($db, $query);
-            if($_SESSION['success'] = "ADDED!!"){
+
+            if(mysqli_query($db, $query)){
+                $_SESSION['success'] = "ADDED!!";
                 header('location: report-sale.php');
+                exit();
+
             }else {
                 array_push($errors, "Please Try Again");
             }

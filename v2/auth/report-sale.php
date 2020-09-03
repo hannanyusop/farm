@@ -22,6 +22,21 @@
     }
     $chart_data = substr($chart_data, 0, -2);
 
+
+
+    if(isset($_GET['delete'])){
+
+
+        $id =$_GET['id'];
+        $query = "DELETE FROM MILKREPORT WHERE id='$id'";
+        mysqli_query($db , $query);
+        if($_SESSION['success'] = "RECORD DELETED!!"){
+            header('location: report-sale.php');
+        }else {
+            array_push($errors, "Please Try Again");
+        }
+    }
+
     ?>
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
@@ -60,7 +75,7 @@
                                                 <th>Month</th>
                                                 <th>Amount (Litres)</th>
                                                 <th>Total Amount (RM)</th>
-                                                <th colspan="2">Operation</th>
+                                                <th>Operation</th>
                                                 </tr>
                                                 <?php
                                                 while($rows=mysqli_fetch_assoc($tables))
@@ -71,8 +86,10 @@
                                                         <td><?php echo $rows['month'];?></td>
                                                         <td><?php echo $rows['amount'];?></td>
                                                         <td><?php echo $rows['total'];?></td>
-                                                        <td><a href='updatemilkreport.php?id=<?php echo $rows['id']; ?>& month=<?php echo $rows['month'];?>& amount=<?php echo $rows['amount'];?>& total=<?php echo $rows['total'];?>'>Update</a></td>
-                                                        <td><a href='deletemilkreport.php?id=<?php echo $rows['id']; ?>& month=<?php echo $rows['month'];?>& amount=<?php echo $rows['amount'];?>& total=<?php echo $rows['total'];?>'>Delete</a></td>
+                                                        <td>
+                                                            <a class="btn btn-info btn-sm" href='report-sale-update.php?id=<?php echo $rows['id']; ?>'>Update</a>
+                                                            <a class="btn btn-danger btn-sm" href='report-sale.php?delete=<?php echo $rows['id']; ?>' onclick="return confirm('Are you sure?')">Delete</a>
+                                                        </td>
                                                     </tr>
                                                     <?php
                                                 }

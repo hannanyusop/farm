@@ -14,19 +14,11 @@
         {
             $date=$_GET['date'];
             $query="SELECT * FROM `cowfeed` WHERE CONCAT(`id`, `date`, `stallno`, `animalid`, `notes`)LIKE '%".$date."%'";
-            $search_result = filterTable($query);
+            $search_result = mysqli_query($db, $query);
         }
         else{
             $query ="SELECT * FROM `cowfeed`";
-            $search_result = filterTable($query);
-        }
-
-
-        function filterTable($query)
-        {
-            $db = mysqli_connect('localhost', 'root', '1234', 'yoga');
-            $filter_Result = mysqli_query($db, $query);
-            return $filter_Result;
+            $search_result = mysqli_query($db, $query);
         }
 
     ?>

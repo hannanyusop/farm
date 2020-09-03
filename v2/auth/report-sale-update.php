@@ -6,52 +6,49 @@
         $nav = [
             'Dashboard' => 'home.php',
             'Report' => '#',
-            'Expenses' => '#',
-            'Create' => '#'
+            'Sales' => '#',
+            $_GET['id'] => '#',
+            'Edit' => '#'
         ];
 
-        $date = "";
-        $purpose = "";
-        $details = "";
-        $total= "";
-        $errors = array();
+    if(isset($_GET['id'])){
 
-        // REGISTER USER
-        if (isset($_POST['reg_add'])) {
-            // receive all input values from the form
-            $date = mysqli_real_escape_string($db, $_POST['date']);
-            $purpose = mysqli_real_escape_string($db, $_POST['purpose']);
-            $details = mysqli_real_escape_string($db, $_POST['details']);
+        $id = $_GET['id'];
+        $edit_state = true;
+        $rec =mysqli_query($db, "SELECT * FROM milkreport WHERE id=$id");
+        $record =mysqli_fetch_array($rec);
+        $id =$record['id'];
+        $month =$record['month'];
+        $amount =$record['amount'];
+        $total =$record['total'];
+
+        if(isset($_POST['update'])){
+
+            $month = mysqli_real_escape_string($db, $_POST['month']);
+            $amount= mysqli_real_escape_string($db, $_POST['amount']);
             $total = mysqli_real_escape_string($db, $_POST['total']);
 
-            // form validation: ensure that the form is correctly filled
-            if (empty($date)) {
-                array_push($errors, "Date is required");
-            }
-            if (empty($purpose)) {
-                array_push($errors, "Purpose is required");
-            }
-            if (empty($details)) {
-                array_push($errors, "Details is required");
-            }
-            if (empty($total)) {
-                array_push($errors, "Total Amount is required");
-            }
+            if (empty($month)) { array_push($errors, "Month is required"); }
+            if (empty($amount)) { array_push($errors, "Amount is required"); }
+            if (empty($total)) { array_push($errors, "Total Amount is required"); }
 
-            // register user if there are no errors in the form
             if (count($errors) == 0) {
-                $query = "INSERT INTO expenses (date, purpose, details, total) 
-                  VALUES('$date', '$purpose', '$details', '$total')";
-                mysqli_query($db, $query);
-                if ($_SESSION['success'] = "ADDED!!") {
-                    header('location: report-expenses.php');
+
+                $query="UPDATE milkreport SET month='$month', amount='$amount',total='$total' WHERE milkreport.id=$id";
+
+                if(mysqli_query($db ,$query)){
+
+                    $_SESSION['success'] = "Record updated!";
+                    header('location: report-sale.php');
                     exit();
 
-                } else {
+                }else {
                     array_push($errors, "Please Try Again");
                 }
             }
         }
+    }
+
     ?>
 
     <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
@@ -78,21 +75,15 @@
                                         <div class="tab-content">
                                             <form class="form-horizontal" method="post">
                                                 <div class="form-group row mb-3">
-                                                    <label for="date" class="col-3 col-form-label">Date</label>
+                                                    <label for="month" class="col-3 col-form-label">Month</label>
                                                     <div class="col-9">
-                                                        <input type="date" name="date" class="form-control" id="date" value="<?php echo $date ?>">
+                                                        <input type="month" name="month" class="form-control" id="month" value="<?php echo $month ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="purpose" class="col-3 col-form-label">Purpose</label>
+                                                    <label for="amount" class="col-3 col-form-label">Amount(Litre)</label>
                                                     <div class="col-9">
-                                                        <input type="text" name="purpose" class="form-control" id="purpose" value="<?php echo $purpose ?>">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row mb-3">
-                                                    <label for="details" class="col-3 col-form-label">Details</label>
-                                                    <div class="col-9">
-                                                        <input type="text" name="details" class="form-control" id="details" value="<?php echo $details ?>">
+                                                        <input type="number" step=".01" name="amount" class="form-control" id="amount" value="<?php echo $amount ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
@@ -103,7 +94,7 @@
                                                 </div>
                                                 <div class="form-group mb-0 justify-content-end row">
                                                     <div class="col-9">
-                                                        <button type="submit" class="btn btn-info" name="reg_add">Create</button>
+                                                        <button type="submit" class="btn btn-info" name="update">Update</button>
                                                     </div>
                                                 </div>
                                             </form>

@@ -3,6 +3,12 @@
     <?php include('include/head.php'); ?>
 
     <?php
+
+        if($_SESSION['user']['usertype'] != 'admin'){
+            array_push($errors, "Not Authorized");
+            header('location: home.php');
+        }
+
         $nav = [
             'Dashboard' => 'home.php',
             'Vaccine' => '#',
@@ -13,12 +19,26 @@
     if(isset($_GET['search']))
     {
         $date=$_GET['date'];
-        $query="SELECT * FROM `vaccine` WHERE CONCAT(`id`, `date`, `stallno`, `animalid`, `vaccine`, `notes`)LIKE '%".$date."%'";
-        $search_result = mysqli_query($db, $query);
-    } else{
-        $query ="SELECT * FROM `vaccine`";
-        $search_result = mysqli_query($db, $query);
+        $query="SELECT * FROM `multi_user` WHERE CONCAT(`username`, `fullname`, `email`, `phoneno`, `icnum`)LIKE '%".$date."%'";
+        $results = mysqli_query($db, $query);
     }
+    else{
+        $query = "SELECT * FROM multi_user";
+        $results = mysqli_query($db, $query);
+    }
+
+    if(isset($_GET['delete'])){
+
+        $id = $_GET['id'];
+        $query = "DELETE FROM multi_user WHERE id='$id'";
+        mysqli_query($db , $query);
+        if($_SESSION['success'] = "RECORD DELETED!!"){
+            header('location: user-view.php');
+        }else {
+            array_push($errors, "Please Try Again");
+        }
+    }
+
     ?>
 
     <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
@@ -64,26 +84,35 @@
                                             <table class="table table-bordered">
                                                 <tr class="bg-info text-white text-center">
                                                     <th>Id</th>
-                                                    <th>Date</th>
-                                                    <th>Stall No</th>
-                                                    <th>Animal ID</th>
-                                                    <th>Vaccine / Type Of Vaccine</th>
-                                                    <th>Notes / Remider</th>
+                                                    <th>Full Name</th>
+                                                    <th>User Type</th>
+                                                    <th>Email</th>
+                                                    <th>Phone Number</th>
+                                                    <th>IC Number</th>
+                                                    <th>Address</th>
+                                                    <th>Salary</th>
+                                                    <th>Joining Date</th>
                                                     <th>Operation</th>
                                                 </tr>
-                                                <?php while($row= mysqli_fetch_array($search_result)):?>
-                                                <tr>
-                                                    <td><?php echo $row['id'];?></td>
-                                                    <td><?php echo $row['date'];?></td>
-                                                    <td><?php echo $row['stallno'];?></td>
-                                                    <td><?php echo $row['animalid'];?></td>
-                                                    <td><?php echo $row['vaccine'];?></td>
-                                                    <td><?php echo $row['notes'];?></td>
-                                                    <td>
-                                                        <a class="btn btn-outline-info btn-sm" href='vaccine-update.php?id=<?php echo $row['id']; ?>'>Update</a>
-                                                        <a class="btn btn-danger btn-sm" href='vaccine-view.php?delete=<?php echo $row['id']; ?>' onclick="return confirm('Are you sure?')">Delete</a>
-                                                    </td>
-                                                    <?php endwhile;?>
+                                                <?php
+                                                while($rows=mysqli_fetch_assoc($results))
+                                                {
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $rows['id'];?></td>
+                                                        <td><?php echo $rows['fullname'];?></td>
+                                                        <td><?php echo $rows['usertype'];?></td>
+                                                        <td><?php echo $rows['email'];?></td>
+                                                        <td><?php echo $rows['phoneno'];?></td>
+                                                        <td><?php echo $rows['icnum'];?></td>
+                                                        <td><?php echo $rows['address'];?></td>
+                                                        <td><?php echo $rows['salary'];?></td>
+                                                        <td><?php echo $rows['joiningdate'];?></td>
+                                                        <td><a class="btn btn-danger btn-sm" href='user-view.php?delete=<?php echo $rows['id']; ?>' onclick="return confirm('Are you sure?')">Delete</a></td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                                ?>
                                             </table>
                                         </div>
                                     </div>
