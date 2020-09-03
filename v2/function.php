@@ -1,19 +1,24 @@
 <?php 
 session_start();
 
+//error_reporting(0);
+//ini_set('display_errors', 0);
+
 // connect to database
 $db = mysqli_connect('localhost', 'root', '1234', 'yoga');
 
 // variable declaration
-$username = "";
-$fullname   = "";
-$email = "";
-$phoneno = "";
-$icnum = "";
-$address = "";
-$salary = "";
-$joiningdate = "";
-$errors   = array(); 
+$username     = (isset($_POST['username']))? $_POST['username'] : "";
+$fullname     = (isset($_POST['fullname']))? $_POST['fullname'] : "";
+$email        = (isset($_POST['email']))? $_POST['email'] : "";
+$usertype     = (isset($_POST['usertype']))? $_POST['usertype'] : "";
+$phoneno      = (isset($_POST['phoneno']))? $_POST['phoneno'] : "";
+$icnum        = (isset($_POST['icnum']))? $_POST['icnum'] : "";
+$address      = (isset($_POST['address']))? $_POST['address'] : "";
+$salary       = (isset($_POST['salary']))? $_POST['salary'] : "";
+$joiningdate  = (isset($_POST['joiningdate']))? $_POST['joiningdate'] : "";
+
+$errors   = array();
 
 // call the register() function if register_btn is clicked
 if (isset($_POST['register_btn'])) {
@@ -74,6 +79,19 @@ function register(){
 		array_push($errors, "The two passwords do not match");
 	}
 
+
+    if (strlen($password_1) < 8) {
+        array_push($errors, "Password too short!");
+    }
+
+    if (!preg_match("#[0-9]+#", $password_1)) {
+        array_push($errors, "Password must include at least one number!");
+    }
+
+    if (!preg_match("#[a-zA-Z]+#", $password_1)) {
+        array_push($errors, "Password must include at least one letter!");
+    }
+
 	// register user if there are no errors in the form
 	if (count($errors) == 0) {
 		$password = md5($password_1);//encrypt the password before saving in the database
@@ -126,7 +144,7 @@ function display_error() {
 			}
 		echo '</div>';
 	}
-}	
+}
 function isLoggedIn()
 {
 	if (isset($_SESSION['user'])) {
@@ -172,22 +190,17 @@ function login(){
 			$logged_in_user = mysqli_fetch_assoc($results);
 
             $_SESSION['type'] = $logged_in_user['usertype'];
-            if ($logged_in_user['usertype'] == 'admin') {
+            $_SESSION['user'] = $logged_in_user;
+            $_SESSION['success']  = "You are now logged in";
+            header('location: auth/home.php');
 
-				$_SESSION['user'] = $logged_in_user;
-				$_SESSION['success']  = "You are now logged in";
-				header('location: auth/home.php');
-			}else{
-				$_SESSION['user'] = $logged_in_user;
-				$_SESSION['success']  = "You are now logged in";
 
-				header('location: auth/home.php');
-			}
 		}else {
 			array_push($errors, "Wrong username/password combination");
 		}
 	}
 }
+
 function isAdmin()
 {
 	if (isset($_SESSION['user']) && $_SESSION['user']['usertype'] == 'admin' ) {
